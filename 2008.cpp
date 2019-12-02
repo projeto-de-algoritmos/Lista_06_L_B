@@ -80,9 +80,9 @@ void dfs(int s, int id){
 
 int knapsack(int w, int i, int direction){
     if(w == 0 || i == 0){
-          if(direction == 0)
-             return D;
-          return P;
+        if(direction == 0)
+            return D;
+        return P;
     }
 
     if(memo[i-1][w] > 0)
@@ -93,37 +93,43 @@ int knapsack(int w, int i, int direction){
     
     if(direction == 0){
         return memo[i-1][w] = MAX(
-                   knapsack(w, i-1, direction),
-                   (prop[i-1].ppp - prop[i-1].dsp) + knapsack(w - prop[i-1].cost, i - 1, direction)
-                );
+            knapsack(w, i-1, direction),
+            (prop[i-1].ppp - prop[i-1].dsp) + knapsack(w - prop[i-1].cost, i - 1, direction)
+        );
     } else {
         return memo[i-1][w] = MAX(
-                   knapsack(w, i-1, direction),
-                   (prop[i-1].dsp - prop[i-1].ppp)  + knapsack(w - prop[i-1].cost, i - 1, direction)
-                );
+            knapsack(w, i-1, direction),
+            (prop[i-1].dsp - prop[i-1].ppp)  + knapsack(w - prop[i-1].cost, i - 1, direction)
+        );
     }
 }
 
 
 int main(){
 
-    int x, y, id;
+    int x, y, id, cont = 1;
     //D = numero de congressistas DSP
     //P = numero de congressistas PPP
     //R = numero de rivalidade entre membros
     //B = orçamento 
-    while(scanf("%d %d %d %d", &D, &P, &R, &B) != EOF){
+    while(printf("congressistas DSP, ongressistas PPP, rivalidade, orçamento\n"),scanf("%d %d %d %d", &D, &P, &R, &B) != EOF){
         N = P + D;
 
         for(int i=0; i<MAXN; i++){
             degree[i] = 0;
             component[i] = -1;
         }
-            
+        
+        printf("Qtd membros em DSP , minimo suborno\n");
+
         for(int i=1; i<=D; i++)
             scanf("%d", &DSP[i]);
+
+        printf("Qtd membros em PPP , minimo suborno\n");
+
         for(int i=D+1; i<=P+D; i++)
             scanf("%d", &PPP[i]);
+        printf("Rivalidade\n");
         for(int i=0; i<R; i++){
             scanf("%d %d", &x, &y);
             y = y + D;
@@ -168,6 +174,11 @@ int main(){
                 memo[i][j] = -1;
     
         printf("%d\n", knapsack(B, id, 1));
+        printf("Se deseja continuar digit 1, caso contrario digite 0");
+        scanf("%d", &cont);
+        if (cont == 0)
+            break;
+
     }
 
 }
